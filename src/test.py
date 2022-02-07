@@ -1,12 +1,9 @@
-import gc
 import pyb
-import cotask
-import task_share
 import utime
 from enc_driver import EncoderConfig
 from motor_driver import MotorConfig
 from servo import Servo
-from pid_controller import PID
+from pid import PID
 
 
 
