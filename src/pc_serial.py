@@ -1,42 +1,62 @@
 import time
 import serial
+import matplotlib.pyplot as plt
 
 
 def main():
     with serial.Serial('COM5', 115201) as ser:
         ser.reset_input_buffer()
         ser.reset_output_buffer()
-        kp_list = input('Enter Kp: ').split(',')
+
         try:
-            map(float, kp_list)
+            kp = float(input('Enter Kp: '))
+            period = float(input('Enter period: '))
         except ValueError:
-            print('Kp must be a number.')
+            print('Invalid input, exiting')
             return
 
-        data = []
-        for i, kp in enumerate(kp_list):
-            ser.write((kp + '\r\n').encode())
-            time.sleep(0.1)
+        data: list = [[], [], []]
+        ser.write((str(kp) + '\r\n').encode())
+        ser.write((str(period) + '\r\n').encode())
+        time.sleep(0.1)
 
-            # get rid of the value we just gave it
-            ser.readline()
+        # get rid of the value we just gave it
+        ser.readline()
 
-            local_data = [[f'x{i}'], [f'y{i}']]
-            while True:
-                line: str = ser.readline().decode()
-                if line == 'end.\r\n':
-                    break
-                if ',' in line:
-                    line = line.split(',')
-                    local_data[0].append(line[0].strip())
-                    local_data[1].append(line[1].strip())
+        while True:
+            line: str = ser.readline().decode()
+            if line == 'end.\r\n':
+                break
+            if ',' in line:
+                name, meat = line.split(':')[0].strip(), line.split(':')[1].strip()
+                meat = list(map(str.strip, meat.split(',')))
+                data[0].append(name)
+                data[1].append(meat[0])
+                data[2].append(meat[1])
 
-            data.append(local_data[0])
-            data.append(local_data[1])
+        servo1 = [[], []]
+        servo2 = [[], []]
+        for i in range(len(data[0])):
+            if data[0][i] == 'servo1':
+                servo1[0].append(float(data[1][i]))
+                servo1[1].append(float(data[2][i]))
+            if data[0][i] == 'servo2':
+                servo2[0].append(float(data[1][i]))
+                servo2[1].append(float(data[2][i]))
 
-        with open('data.csv', 'w') as f:
-            for col in zip(*data):
-                f.write(','.join(col) + '\n')
+        figure, axis = plt.subplots(2, 1)
+
+        axis[0].plot(servo1[0], servo1[1])
+        axis[0].set_title('Servo 1')
+        axis[0].set_xlabel('Time (s)')
+        axis[0].set_ylabel('Position (Ticks)')
+
+        axis[1].plot(servo2[0], servo2[1])
+        axis[1].set_title('Servo 2')
+        axis[1].set_xlabel('Time (s)')
+        axis[1].set_ylabel('Position (Ticks)')
+
+        plt.show()
 
 
 if __name__ == '__main__':
