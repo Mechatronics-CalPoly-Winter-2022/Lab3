@@ -112,7 +112,6 @@ if __name__ == "__main__":
     servo2 = None
     pid2 = None
 
-
     # Create the tasks. If trace is enabled for any task, memory will be
     # allocated for state transition tracing, and the application will run out
     # of memory after a while and quit. Therefore, use tracing only for 
@@ -123,27 +122,27 @@ if __name__ == "__main__":
     #task2 = cotask.Task (task2_fun, name = 'Task_2', priority = 1, 
     #                     period = 10, profile = True, trace = False)
     
-    cotask.task_list.append (task1)
+    cotask.task_list.append(task1)
     #cotask.task_list.append (task2)
 
     # Run the memory garbage collector to ensure memory is as defragmented as
     # possible before the real-time scheduler is started
-    gc.collect ()
+    gc.collect()
 
     # Run the scheduler with the chosen scheduling algorithm. Quit if any 
     # character is received through the serial port
-    vcp = pyb.USB_VCP ()
+    vcp = pyb.USB_VCP()
     
-    vcp.read ()
+    vcp.read )
     
-    while not vcp.any ():
-        cotask.task_list.pri_sched ()
+    while not vcp.any():
+        cotask.task_list.pri_sched()
 
     # Empty the comm port buffer of the character(s) just pressed
-    vcp.read ()
+    vcp.read()
 
     # Print a table of task data and a table of shared information data
-    print ('\n' + str (cotask.task_list))
-    print (task_share.show_all ())
-    print (task1.get_trace ())
-    print ('\r\n')
+    print('\n' + str(cotask.task_list))
+    print(task_share.show_all())
+    print(task1.get_trace())
+    print('\r\n')
