@@ -84,12 +84,12 @@ def motor_test(servo: Servo, pid: PID):
 def task1_fun ():
     global servo1
     global pid1
-    motor_test(servo1, pid1)
+    yield motor_test(servo1, pid1)
 
 def task2_fun ():
     global servo2
     global pid2
-    motor_test(servo2, pid2)
+    yield motor_test(servo2, pid2)
 
 
 # This code creates a share, a queue, and two tasks, then starts the tasks. The
