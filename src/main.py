@@ -11,6 +11,17 @@
     Public License, Version 2.
 """
 
+##
+#@mainpage
+#@section description_main Lab 3
+#This lab determines the step response of two motors, when set up
+#as tasks with the CoTask module. Various periods were tested
+#to determine which provided the best test response
+#
+# @author Kyle Jennings, Zarek Lazowski, William Dorosk
+# @date February 8th, 2022
+
+
 import gc
 import pyb
 import cotask
