@@ -1,10 +1,16 @@
+'''!
+@brief This file communicates with the microcontroller over serial
+in order to receive, parse, and print the data that is printed out 
+in main.py
+'''
+
 import time
 import serial
 import matplotlib.pyplot as plt
 
 
 def main():
-    with serial.Serial('COM5', 115201) as ser:
+    with serial.Serial('COM5', 115200) as ser:
         ser.reset_input_buffer()
         ser.reset_output_buffer()
 

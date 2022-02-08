@@ -1,10 +1,11 @@
 """!
-@file basic_tasks.py
-    This file contains a demonstration program that runs some tasks, an
-    inter-task shared variable, and a queue. The tasks don't really @b do
-    anything; the example just shows how these elements are created and run.
+@file main.py
+    Adapted from Professor Ridgely's basic_tasks.py program, this
+    file creates two motor step response tasks, gives them to the
+    task manager, and runs them at given intervals. The time and 
+    encoder values are passed back to the PC via serial.
 
-@author JR Ridgely
+@author JR Ridgely, Kyle Jennings, Zarek Lazowski, William Dorosk
 @date   2021-Dec-15 JRR Created from the remains of previous example
 @copyright (c) 2015-2021 by JR Ridgely and released under the GNU
     Public License, Version 2.
@@ -24,7 +25,11 @@ from pid import PID
 
 def motor_test(servo: Servo, pid: PID, self_done: Share, other_done: Share):
     """!
-    Task which puts things into a share and a queue.
+    Task which runs a motor step response and outputs time data and encoder
+    data. 
+
+    When run with a second motor, uses shares to determine if both motors 
+    are done testing.
     """
     # initialize encoder and time data lists
     encoder_data = []
